@@ -11,7 +11,7 @@ import (
 	"crypto/sha512"
 	"errors"
 	"fmt"
-	"github.com/cetcxinlian/cryptogm/x509"
+	"github.com/xiekang997653765/CryptoGM/x509"
 	"io"
 	"math/big"
 	"net"

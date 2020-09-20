@@ -9,7 +9,7 @@ import (
 	"bytes"
 	"crypto/rand"
 	"encoding/gob"
-	"github.com/cetcxinlian/cryptogm/sm3"
+	"github.com/xiekang997653765/CryptoGM/sm3"
 	"reflect"
 	"testing"
 )
