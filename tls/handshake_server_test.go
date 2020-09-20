@@ -10,7 +10,7 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rsa"
-	"github.com/xiekang997653765/crypto/x509"
+	"github.com/xiekang997653765/CryptoGM/x509"
 	"encoding/hex"
 	"encoding/pem"
 	"errors"
