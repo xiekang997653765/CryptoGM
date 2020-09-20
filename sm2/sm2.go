@@ -10,7 +10,7 @@ import (
 	"crypto/elliptic"
 	"encoding/asn1"
 	"errors"
-	"github.com/cetcxinlian/cryptogm/sm3"
+	"github.com/xiekang997653765/CryptoGM/sm3"
 	"io"
 	"math/big"
 )

@@ -11,10 +11,10 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"github.com/cetcxinlian/cryptogm/sm2"
-	"github.com/cetcxinlian/cryptogm/sm3"
-	"github.com/cetcxinlian/cryptogm/sm4"
-	"github.com/cetcxinlian/cryptogm/x509"
+	"github.com/xiekang997653765/CryptoGM/sm2"
+	"github.com/xiekang997653765/CryptoGM/sm3"
+	"github.com/xiekang997653765/CryptoGM/sm4"
+	"github.com/xiekang997653765/CryptoGM/x509"
 	"io/ioutil"
 	"strings"
 	"sync"
@@ -163,7 +163,7 @@ func (nilMD5Hash) BlockSize() int {
 }
 
 func newFinishedHashGM(cipherSuite *cipherSuite) finishedHash {
-	return finishedHash{sm3.New(), sm3.New(), new(nilMD5Hash), new(nilMD5Hash), nil, VersionGMSSL, prf12(sm3.New)}
+	return finishedHash{sm3.New(), sm3.New(), new(nilMD5Hash), new(nilMD5Hash), []byte{}, VersionGMSSL, prf12(sm3.New)}
 
 }
 

@@ -45,6 +45,10 @@ func (s *CertPool) copy() *CertPool {
 	return p
 }
 
+func (s *CertPool) GetCerts() []*Certificate {
+	return s.certs
+}
+
 // SystemCertPool returns a copy of the system cert pool.
 //
 // Any mutations to the returned pool are not written to disk and do

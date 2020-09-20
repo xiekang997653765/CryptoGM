@@ -11,6 +11,8 @@ import (
 	"encoding/asn1"
 	"errors"
 	"fmt"
+
+	"github.com/xiekang997653765/CryptoGM/sm2"
 )
 
 // pickSignatureAlgorithm selects a signature algorithm that is compatible with
@@ -36,6 +38,8 @@ func pickSignatureAlgorithm(pubkey crypto.PublicKey, peerSigAlgs, ourSigAlgs []S
 			}
 		case *ecdsa.PublicKey:
 			return ECDSAWithSHA1, signatureECDSA, crypto.SHA1, nil
+		case *sm2.PublicKey:
+			return SM2WITHSM3, signatureSM2, crypto.SHA1, nil
 		default:
 			return 0, 0, 0, fmt.Errorf("tls: unsupported public key: %T", pubkey)
 		}
@@ -55,6 +59,10 @@ func pickSignatureAlgorithm(pubkey crypto.PublicKey, peerSigAlgs, ourSigAlgs []S
 				return sigAlg, sigType, hashAlg, nil
 			}
 		case *ecdsa.PublicKey:
+			if sigType == signatureECDSA {
+				return sigAlg, sigType, hashAlg, nil
+			}
+		case *sm2.PublicKey:
 			if sigType == signatureECDSA {
 				return sigAlg, sigType, hashAlg, nil
 			}
@@ -100,6 +108,14 @@ func verifyHandshakeSignature(sigType uint8, pubkey crypto.PublicKey, hashFunc c
 		signOpts := &rsa.PSSOptions{SaltLength: rsa.PSSSaltLengthEqualsHash}
 		if err := rsa.VerifyPSS(pubKey, hashFunc, digest, sig, signOpts); err != nil {
 			return err
+		}
+		case signatureSM2:
+		pubKey, ok := pubkey.(*sm2.PublicKey)
+		if !ok {
+			return errors.New("tls: SM2 signing requires a SM2 public key")
+		}
+		if ok := pubKey.Verify(digest, sig); !ok {
+			return errors.New("verify sm2 signature error")
 		}
 	default:
 		return errors.New("tls: unknown signature algorithm")

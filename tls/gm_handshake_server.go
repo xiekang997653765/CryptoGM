@@ -11,7 +11,8 @@ import (
 	"crypto/subtle"
 	"errors"
 	"fmt"
-	"github.com/cetcxinlian/cryptogm/x509"
+	"github.com/xiekang997653765/CryptoGM/sm2"
+	"github.com/xiekang997653765/CryptoGM/x509"
 	"io"
 	"sync/atomic"
 )
@@ -397,15 +398,15 @@ func (hs *serverHandshakeStateGM) doFullHandshake() error {
 
 	if c.config.ClientAuth >= RequestClientCert {
 		// Request a client certificate
-		certReq := new(certificateRequestMsg)
+		certReq := new(certificateRequestMsgGM)
 		certReq.certificateTypes = []byte{
 			byte(certTypeRSASign),
 			byte(certTypeECDSASign),
 		}
-		if c.vers >= VersionTLS12 {
-			certReq.hasSignatureAndHash = true
-			certReq.supportedSignatureAlgorithms = supportedSignatureAlgorithms
-		}
+		//if c.vers >= VersionTLS12 {
+		//	certReq.hasSignatureAndHash = true
+		//	certReq.supportedSignatureAlgorithms = supportedSignatureAlgorithms
+		//}
 
 		// An empty list of certificateAuthorities signals to
 		// the client that it may send any certificate in response
@@ -696,7 +697,7 @@ func (hs *serverHandshakeStateGM) processCertsFromClient(certificates [][]byte) 
 
 	var pub crypto.PublicKey
 	switch key := certs[0].PublicKey.(type) {
-	case *ecdsa.PublicKey, *rsa.PublicKey:
+	case *ecdsa.PublicKey, *rsa.PublicKey, *sm2.PublicKey:
 		pub = key
 	default:
 		c.sendAlert(alertUnsupportedCertificate)

@@ -18,7 +18,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/cetcxinlian/cryptogm/x509"
+	"github.com/xiekang997653765/CryptoGM/x509"
 )
 
 // A Conn represents a secured connection.
@@ -569,9 +569,6 @@ func (c *Conn) readRecord(want recordType) error {
 	// handshake data if handshake not yet completed,
 	// else application data.
 	switch want {
-	default:
-		c.sendAlert(alertInternalError)
-		return c.in.setErrorLocked(errors.New("tls: unknown record type requested"))
 	case recordTypeHandshake, recordTypeChangeCipherSpec:
 		if c.handshakeComplete() {
 			c.sendAlert(alertInternalError)
@@ -582,6 +579,9 @@ func (c *Conn) readRecord(want recordType) error {
 			c.sendAlert(alertInternalError)
 			return c.in.setErrorLocked(errors.New("tls: application data record requested while in handshake"))
 		}
+	default:
+		c.sendAlert(alertInternalError)
+		return c.in.setErrorLocked(errors.New("tls: unknown record type requested"))
 	}
 
 Again:
@@ -986,8 +986,12 @@ func (c *Conn) readHandshake() (interface{}, error) {
 	case typeCertificate:
 		m = new(certificateMsg)
 	case typeCertificateRequest:
-		m = &certificateRequestMsg{
-			hasSignatureAndHash: c.vers >= VersionTLS12,
+		if c.config.GMSupport != nil {
+			m = &certificateRequestMsgGM{}
+		} else {
+			m = &certificateRequestMsg{
+				hasSignatureAndHash: c.vers >= VersionTLS12,
+			}
 		}
 	case typeCertificateStatus:
 		m = new(certificateStatusMsg)

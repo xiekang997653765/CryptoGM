@@ -10,8 +10,8 @@ import (
 	"crypto/elliptic"
 	"encoding/asn1"
 	"errors"
-	"github.com/cetcxinlian/cryptogm/sm2"
-	"github.com/cetcxinlian/cryptogm/x509"
+	"github.com/xiekang997653765/CryptoGM/sm2"
+	"github.com/xiekang997653765/CryptoGM/x509"
 	"io"
 	"math/big"
 

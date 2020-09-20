@@ -11,7 +11,7 @@ import (
 	"crypto/sha512"
 	"errors"
 	"fmt"
-	"github.com/cetcxinlian/cryptogm/x509"
+	"github.com/xiekang997653765/CryptoGM/x509"
 	"io"
 	"math/big"
 	"net"
@@ -132,6 +132,7 @@ const (
 	signaturePKCS1v15 uint8 = iota + 16
 	signatureECDSA
 	signatureRSAPSS
+	signatureSM2
 )
 
 // supportedSignatureAlgorithms contains the signature and hash algorithms that
@@ -240,6 +241,7 @@ const (
 
 	// Legacy signature and hash algorithms for TLS 1.2.
 	ECDSAWithSHA1 SignatureScheme = 0x0203
+	SM2WITHSM3 SignatureScheme = 0x0204
 )
 
 // ClientHelloInfo contains information from a ClientHello message in order to
